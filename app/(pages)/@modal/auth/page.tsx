@@ -1,11 +1,12 @@
 "use client";
 
 import useUser from "@/hook/use-user";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const AuthPage = () => {
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -25,13 +26,9 @@ const AuthPage = () => {
         <div className="basis-auto flex justify-center">
           <p
             className="underline text-green-500 cursor-pointer"
-            onClick={() =>
-              setUser({
-                id: 0,
-                name: "양나원",
-                email: "",
-              })
-            }
+            onClick={async () => {
+              signIn("naver");
+            }}
           >
             네이버로 로그인
           </p>
