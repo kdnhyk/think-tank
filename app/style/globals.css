@@ -7,10 +7,17 @@
     @apply h-full bg-white;
   }
   body {
-    @apply text-black bg-white font-inter h-full;
+    @apply text-white font-inter h-full;
   }
   * {
-    @apply leading-none border-black;
+    @apply leading-none border-white;
+  }
+
+  button {
+    @apply h-11 w-full rounded-[12px] transition-colors;
+  }
+  textarea {
+    @apply bg-transparent p-3 leading-normal resize-none;
   }
 }
 
@@ -26,6 +33,13 @@
   }
   .flex-center {
     @apply flex items-center justify-center;
+  }
+
+  .button-base {
+    @apply bg-black text-white disabled:bg-white disabled:text-black;
+  }
+  .button-white {
+    @apply bg-white text-black border;
   }
 }
 
