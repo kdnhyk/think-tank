@@ -14,10 +14,10 @@
   }
 
   button {
-    @apply h-11 w-full rounded-[12px] transition-colors;
+    @apply h-11 w-full rounded-[12px] transition-colors cursor-pointer;
   }
   textarea {
-    @apply bg-transparent p-3 leading-normal resize-none;
+    @apply bg-transparent p-3 leading-normal resize-none outline-none;
   }
 }
 
