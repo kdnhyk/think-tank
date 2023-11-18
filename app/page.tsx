@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import ForceGraph3D from '3d-force-graph';
+import * as THREE from 'three';
 
 const Home = () => {
   const [selectedNode, setSelectedNode] = useState(null);
@@ -17,31 +18,74 @@ const Home = () => {
       })),
     };
 
-    const graphInstance = ForceGraph3D()(
-      document.getElementById('3d-graph') as HTMLDivElement
-    )
-      .graphData(gData)
-      .jsonUrl('/dummy.json')
-      .nodeLabel('id')
-      .nodeAutoColorBy('group')
-      .onNodeClick((node) => {
-        setSelectedNode(node);
-        setIsModalOpen(true);
-        graphInstance.d3Force('center', null); // Stop the force-directed layout
 
-        // Camera position transition
-        const distance = 40;
-        const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
-        const newPos = node.x || node.y || node.z
-          ? { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }
-          : { x: 0, y: 0, z: distance };
+    const Graph = ForceGraph3D()(document.getElementById('3d-graph')as HTMLDivElement)
+    .nodeThreeObject(
+      ({ id }) =>
+        new THREE.Mesh(
+          [
+            new THREE.BoxGeometry(Math.random() * 20, Math.random() * 20, Math.random() * 20),
+            new THREE.ConeGeometry(Math.random() * 10, Math.random() * 20),
+            new THREE.CylinderGeometry(Math.random() * 10, Math.random() * 10, Math.random() * 20),
+            new THREE.DodecahedronGeometry(Math.random() * 10),
+            new THREE.SphereGeometry(Math.random() * 10),
+            new THREE.TorusGeometry(Math.random() * 10, Math.random() * 2),
+            new THREE.TorusKnotGeometry(Math.random() * 10, Math.random() * 2),
+          ][id % 7],
+          new THREE.MeshLambertMaterial({
+            color: Math.round(Math.random() * Math.pow(2, 24)),
+            transparent: true,
+            opacity: 0.75,
+          })
+        )
+    ).graphData(gData);
 
-        graphInstance.cameraPosition(
-          newPos, // new position
-          node, // lookAt ({ x, y, z })
-          3000 // ms transition duration
-        );
-      });
+    const graphInstance = Graph.onNodeClick((node) => {
+      setSelectedNode(node);
+      setIsModalOpen(true);
+      graphInstance.d3Force('center', null); // Stop the force-directed layout
+
+      // Camera position transition
+      const distance = 40;
+      const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+      const newPos = node.x || node.y || node.z
+        ? { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }
+        : { x: 0, y: 0, z: distance };
+
+      graphInstance.cameraPosition(
+        newPos, // new position
+        node, // lookAt ({ x, y, z })
+        3000 // ms transition duration
+      );
+    });
+
+
+
+    // const graphInstance = ForceGraph3D()(
+    //   document.getElementById('3d-graph') as HTMLDivElement
+    // )
+    //   .graphData(gData)
+    //   .jsonUrl('/dummy.json')
+    //   .nodeLabel('id')
+    //   .nodeAutoColorBy('group')
+    //   .onNodeClick((node) => {
+    //     setSelectedNode(node);
+    //     setIsModalOpen(true);
+    //     graphInstance.d3Force('center', null); // Stop the force-directed layout
+
+    //     // Camera position transition
+    //     const distance = 40;
+    //     const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+    //     const newPos = node.x || node.y || node.z
+    //       ? { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }
+    //       : { x: 0, y: 0, z: distance };
+
+    //     graphInstance.cameraPosition(
+    //       newPos, // new position
+    //       node, // lookAt ({ x, y, z })
+    //       3000 // ms transition duration
+    //     );
+    //   });
 
     return () => {
       graphInstance.graphData({ nodes: [], links: [] });
