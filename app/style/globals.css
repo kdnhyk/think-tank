@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply h-full bg-white;
+  }
+  body {
+    @apply text-black bg-white font-inter h-full;
+  }
+  * {
+    @apply leading-none border-black;
+  }
+}
+
+@layer components {
+  .full {
+    @apply w-full h-full;
+  }
+  .absolute-full {
+    @apply absolute inset-0 w-full h-full;
+  }
+  .fixed-full {
+    @apply fixed inset-0 w-full h-full;
+  }
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+}
+
+@layer utilities {
+}
