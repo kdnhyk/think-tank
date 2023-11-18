@@ -1,8 +1,10 @@
 "use client";
 
+import Cursor from "@/(components)/Cursor";
 import Navigation from "@/(components)/Navigation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
 
 export default function Layout({
@@ -26,14 +28,17 @@ export default function Layout({
 
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <main className="bg-black full">{children}</main>
+      <SessionProvider>
+        <QueryClientProvider client={queryClient}>
+          <main className="bg-black full">{children}</main>
 
-        {modal}
+          {modal}
 
-        <Navigation />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+          <Navigation />
+          <Cursor />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </SessionProvider>
     </>
   );
 }
