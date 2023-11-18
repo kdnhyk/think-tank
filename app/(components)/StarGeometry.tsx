@@ -1,6 +1,13 @@
 import * as THREE from 'three';
 
-const StarGeometry = (innerRadius, outerRadius, numPoints, depth) => {
+interface StarGeometryProps {
+  innerRadius: number; 
+  outerRadius: number;
+  numPoints: number;
+  depth: number;
+}
+
+const StarGeometry = ({innerRadius, outerRadius, numPoints, depth}: StarGeometryProps) => {
   const starShape = new THREE.Shape();
 
   for (let i = 0; i < 2 * Math.PI; i += (2 * Math.PI) / numPoints) {

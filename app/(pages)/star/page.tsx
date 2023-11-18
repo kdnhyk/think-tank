@@ -28,7 +28,7 @@ const Home = () => {
       .nodeThreeObject(
         ({ id }) =>
           new THREE.Mesh(
-            StarGeometry(Math.random() * 5, Math.random() * 10, 5, Math.random() * 5),
+            StarGeometry({innerRadius: Math.random() * 5, outerRadius: Math.random() * 10, numPoints: 5, depth: Math.random() * 5}),
             new THREE.MeshLambertMaterial({
               color: 0xFFFFFF, // White color
               transparent: true,
